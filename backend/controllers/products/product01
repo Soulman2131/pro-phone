@@ -1,0 +1,30 @@
+// On fera avec NPM I EXPRESS-ASYNC-HANDLER dans le 02
+
+import asyncHandler from "../middleware/asyncHandler.js";
+import { ProductModel } from "../models/Product.js";
+
+// GET ALL
+const getProducts = asyncHandler(async (req, res, next) => {
+  const products = await ProductModel.find({});
+  res.status(200).json(products);
+});
+
+// CREATE
+const createProduct = asyncHandler(async (req, res, next) => {
+  const post = await ProductModel.create(req.body);
+
+  res.status(201).json(post);
+});
+
+// GET ID
+const getProduct = asyncHandler(async (req, res, next) => {
+  const product = await ProductModel.findById(req.params.id);
+  if (product) {
+    res.status(200).json(product);
+  } else {
+    res.status(404);
+    throw new Error("Ce produit n'existe pas");
+  }
+});
+
+export { getProducts, getProduct, createProduct };
